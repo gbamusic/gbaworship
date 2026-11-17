@@ -68,7 +68,7 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--creme);font-fami
 .wrap{position:relative;height:100%;max-width:520px;margin:0 auto;touch-action:none}
 canvas{display:block;width:100%;height:100%}
 .hud{position:absolute;left:0;right:0;top:0;padding:max(12px,env(safe-area-inset-top)) 14px 0;pointer-events:none;display:flex;flex-direction:column;gap:8px}
-.hud .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hud .top{padding-right:52px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .pill{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:18px;background:rgba(38,50,58,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font:800 14px var(--ui)}
 .pill .n{color:var(--ambar)}
 .hearts{letter-spacing:2px;color:var(--ambar)}
@@ -104,7 +104,7 @@ canvas{display:block;width:100%;height:100%}
 .city span{display:inline-block;padding:5px 10px;border-radius:8px;background:var(--ambar);color:var(--noite);font:800 13px var(--ui);letter-spacing:1px}
 .ib{position:absolute;top:max(12px,env(safe-area-inset-top));left:12px;width:44px;height:44px;border-radius:12px;border:0;background:rgba(38,50,58,.78);color:var(--creme);display:grid;place-items:center;text-decoration:none;z-index:5}
 .ib svg{width:22px;height:22px}
-.toast{position:absolute;left:50%;bottom:120px;transform:translateX(-50%);padding:10px 16px;border-radius:10px;background:var(--creme);color:var(--noite);font:800 14px var(--ui);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.toast{position:absolute;left:50%;top:150px;transform:translateX(-50%);padding:10px 16px;border-radius:10px;background:var(--creme);color:var(--noite);font:800 14px var(--ui);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 .intro{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:center;padding:max(64px,calc(env(safe-area-inset-top) + 52px)) 22px 0;text-align:center}
 .intro[hidden]{display:none!important}
@@ -112,7 +112,7 @@ canvas{display:block;width:100%;height:100%}
 .intro p.on{opacity:1;transform:none}
 .intro p.amb{color:var(--ambar)}
 .intro p.l3{margin-top:auto;margin-bottom:max(120px,22vh);font:600 16px/1.4 var(--ui);text-transform:none;letter-spacing:0;color:var(--suave)}
-.skip{position:absolute;right:12px;top:max(12px,env(safe-area-inset-top));min-height:44px;padding:0 16px;border:0;border-radius:22px;background:rgba(38,50,58,.78);color:var(--creme);font:800 13px var(--ui);cursor:pointer;z-index:6}
+.skip{position:absolute;left:12px;top:max(12px,env(safe-area-inset-top));min-height:44px;padding:0 16px;border:0;border-radius:22px;background:rgba(38,50,58,.78);color:var(--creme);font:800 13px var(--ui);cursor:pointer;z-index:6}
 .skip[hidden]{display:none}
 .tap{position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#151D22;border:0;color:var(--creme);cursor:pointer;font:600 14px var(--ui);padding:24px}
 .tap[hidden]{display:none}
@@ -126,7 +126,7 @@ canvas{display:block;width:100%;height:100%}
 .song{display:flex;align-items:center;gap:6px;margin-top:6px;font:600 11px var(--ui);color:var(--suave);opacity:0;transition:opacity .6s}
 .song.on{opacity:1}
 .song i{width:6px;height:6px;border-radius:50%;background:var(--ambar);animation:tp 1.6s ease-out infinite}
-.mute{position:absolute;right:12px;bottom:max(14px,env(safe-area-inset-bottom));z-index:7;width:44px;height:44px;border-radius:50%;border:0;background:rgba(38,50,58,.8);color:var(--creme);display:grid;place-items:center;cursor:pointer}
+.mute{position:absolute;right:12px;top:max(12px,env(safe-area-inset-top));z-index:7;width:44px;height:44px;border-radius:50%;border:0;background:rgba(38,50,58,.8);color:var(--creme);display:grid;place-items:center;cursor:pointer}
 .mute svg{width:20px;height:20px}
 .mute:focus-visible,.tap:focus-visible{outline:3px solid var(--ambar);outline-offset:3px}
 .pbtn{pointer-events:auto;border:0;color:var(--creme);cursor:pointer;width:44px;justify-content:center;padding:0}
@@ -140,7 +140,7 @@ canvas{display:block;width:100%;height:100%}
   <canvas id="c" aria-label="Jogo Na Estrada: van do GBA Worship numa estrada com três faixas"></canvas>
 
   <div class="hud" id="hud" hidden>
-    <div class="top"><button class="pill pbtn" id="bPause" type="button" aria-label="Pausar"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><span class="pill">♪ <span class="n" id="hNotes">0</span></span><span class="pill" id="hCity">Cidade 1/36</span><span class="pill hearts" id="hLife" aria-label="Vidas">♥♥</span></div>
+    <div class="top"><button class="pill pbtn" id="bPause" type="button" aria-label="Pausar"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><span class="pill">♪ <span class="n" id="hNotes">0</span></span><span class="pill" id="hCity">Cidade 1/36</span><span class="pill hearts" id="hLife" aria-label="Vidas">♥♥♥</span></div>
     <div class="leg"><div class="names"><b id="hFrom"></b><span id="hTo"></span></div><div class="bar"><i id="hBar"></i></div><div class="song" id="song"><i></i><span id="songName"></span></div></div>
   </div>
   <div class="city" id="city" aria-live="polite"><small>Chegamos em</small><b id="cName"></b><span id="cUf"></span></div>
@@ -152,8 +152,8 @@ canvas{display:block;width:100%;height:100%}
   <section class="screen" id="sStart" hidden>
     <a class="ib" href="./" aria-label="Voltar para o site"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></a>
     <h1>Na<br><span class="amb">estrada</span></h1>
-    <p>Leve o GBA Worship pelas <b id="nCities">36</b> cidades da turnê. Cada nota acelera a viagem até a próxima cidade. Bateu duas vezes, acabou.</p>
-    <div class="how"><span><i></i>Nota: acelera</span><span><i style="background:var(--creme)"></i>2×: vale dobro</span><span><i class="c"></i>2 batidas: fim</span></div>
+    <p>Leve o GBA Worship pelas <b id="nCities">36</b> cidades da turnê. Cada nota acelera a viagem até a próxima cidade. Bateu três vezes, acabou. E fica de olho: com uma vida só, pode aparecer um anjo na beira da estrada.</p>
+    <div class="how"><span><i></i>Nota: acelera</span><span><i style="background:var(--creme)"></i>2×: vale dobro</span><span><i class="c"></i>3 batidas: fim</span><span><i style="background:#F07E8C"></i>Coração: +1 vida</span></div>
     <p style="margin-top:8px;font-size:13px">Toque à esquerda ou à direita da tela (ou use as setas) para trocar de faixa.</p>
     <div class="btns"><button class="btn pri" type="button" id="bPlay">Bora pra estrada</button></div>
   </section>
@@ -210,7 +210,7 @@ const NOTES = [523.25, 587.33, 659.25, 783.99, 880];
 const LEG_TIME = 22; // segundos por trecho entre cidades
 let S;
 function reset() {
-  S = { run: false, t: 0, lane: 1, vx: 1, speed: 260, items: [], spawn: .8, notes: 0, life: 2, city: 0, leg: 0, inv: 0, dash: 0, shake: 0, side: 0, parts: [], noteIdx: 0, cel: 0, paused: false };
+  S = { run: false, t: 0, lane: 1, vx: 1, speed: 260, items: [], spawn: .8, notes: 0, life: 3, city: 0, leg: 0, inv: 0, dash: 0, shake: 0, side: 0, parts: [], noteIdx: 0, cel: 0, paused: false, angel: null, angelCD: 0 };
 }
 reset();
 const laneX = l => W / 2 + (l - 1) * Math.min(W * .26, 130);
@@ -234,7 +234,7 @@ $("wrap").addEventListener("pointerup", e => {
 
 function hud() {
   $("hNotes").textContent = S.notes;
-  $("hLife").textContent = "♥".repeat(Math.max(0, S.life)) + "♡".repeat(2 - Math.max(0, S.life));
+  $("hLife").textContent = "♥".repeat(Math.max(0, S.life)) + "♡".repeat(3 - Math.max(0, S.life));
   $("hCity").textContent = "Cidade " + Math.min(S.city + 1, CIDADES.length) + "/" + CIDADES.length;
   const a = CIDADES[S.city % CIDADES.length], b = CIDADES[(S.city + 1) % CIDADES.length];
   $("hFrom").textContent = a[0]; $("hTo").textContent = "→ " + b[0];
@@ -267,10 +267,21 @@ function update(dt) {
     if (!it.hit && Math.abs(it.y - vy) < 44 && it.lane === S.lane) {
       it.hit = true;
       if (it.kind === "note") { const v = it.x2 ? 2 : 1; S.notes += v; S.leg += 1.1 * v; beep(NOTES[S.noteIdx++ % NOTES.length], .18); if (it.x2) setTimeout(() => beep(NOTES[(S.noteIdx + 1) % NOTES.length] * 2, .2), 90); burst(vxp, vy - 30, it.x2 ? C.creme : C.ambar); if (it.x2) burst(vxp, vy - 30, C.ambar); }
+      else if (it.kind === "heart") { S.life = Math.min(3, S.life + 1); if (S.angel) S.angel.given = true; [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => setTimeout(() => beep(f, .3, "sine", .1), i * 90)); burst(vxp, vy - 30, "#F07E8C"); burst(vxp, vy - 30, C.creme); toast("+1 vida! Obrigado, anjo"); }
       else if (S.inv <= 0) { S.life--; S.inv = 1.2; S.shake = .35; beep(140, .3, "sawtooth", .08); burst(vxp, vy - 20, C.clara); if (navigator.vibrate) navigator.vibrate(80); if (S.life <= 0) end(false); }
     }
   });
-  S.items = S.items.filter(it => it.y < H + 60 && !(it.hit && it.kind === "note"));
+  S.items = S.items.filter(it => it.y < H + 60 && !(it.hit && (it.kind === "note" || it.kind === "heart")));
+  // anjo: aparece quando sobra uma vida
+  S.angelCD = Math.max(0, S.angelCD - dt);
+  if (S.life === 1 && !S.angel && S.angelCD <= 0) {
+    const side = Math.random() < .5 ? 0 : 2;
+    S.angel = { side, y: -90, given: false };
+    S.items = S.items.filter(it => !(it.y < 60 && it.lane === side));
+    S.items.push({ kind: "heart", lane: side, y: -70 });
+    S.angelCD = 16; toast("Um anjo na estrada! Pega o coração");
+  }
+  if (S.angel) { S.angel.y += S.speed * dt; if (S.angel.y > H + 120) S.angel = null; }
   S.parts.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; if (p.conf) { p.vy += 420 * dt; p.vx *= .985; p.r += dt * 8; } p.life -= dt; }); S.parts = S.parts.filter(p => p.life > 0);
   if (S.leg >= LEG_TIME) arrive();
   hud();
@@ -307,6 +318,25 @@ function heads() {
   if (cel > 0) { g.fillStyle = C.creme; g.font = "800 14px Manrope, sans-serif"; g.textAlign = "center";
     g.globalAlpha = Math.min(1, cel); g.fillText("♪", -52, -64 - (2.4 - cel) * 20); g.fillText("♪", 54, -58 - (2.4 - cel) * 24); g.globalAlpha = 1; }
 }
+function heartPath(x, y, s) {
+  g.beginPath(); g.moveTo(x, y + s * .55);
+  g.bezierCurveTo(x - s * 1.1, y - s * .1, x - s * .55, y - s * .95, x, y - s * .35);
+  g.bezierCurveTo(x + s * .55, y - s * .95, x + s * 1.1, y - s * .1, x, y + s * .55); g.closePath();
+}
+function drawAngel(a, rx, rw) {
+  const left = a.side === 0, x = left ? rx + 8 : rx + rw - 8, y = a.y + Math.sin(S.t * 3) * 4, dir = left ? 1 : -1, flap = Math.sin(S.t * 10) * .35;
+  g.save(); g.translate(x, y);
+  const gl = g.createRadialGradient(0, -10, 0, 0, -10, 70); gl.addColorStop(0, "rgba(255,240,200,.45)"); gl.addColorStop(1, "rgba(255,240,200,0)"); g.fillStyle = gl; g.fillRect(-70, -80, 140, 140);
+  g.fillStyle = "rgba(243,236,226,.9)";
+  [-1, 1].forEach(sd => { g.save(); g.translate(sd * 6, -18); g.rotate(sd * (.5 + flap)); g.beginPath(); g.ellipse(sd * 14, 0, 16, 8, sd * -.3, 0, 7); g.fill(); g.restore(); });
+  g.fillStyle = "#FFFFFF"; g.beginPath(); g.moveTo(-8, -20); g.lineTo(8, -20); g.lineTo(14, 16); g.lineTo(-14, 16); g.closePath(); g.fill();
+  g.fillStyle = "#E8C3A0"; g.beginPath(); g.arc(0, -28, 8, 0, 7); g.fill();
+  g.fillStyle = "#8A5A3C"; g.beginPath(); g.arc(0, -31, 8, Math.PI * 1.05, Math.PI * 1.95); g.fill();
+  g.strokeStyle = "#FFD23F"; g.lineWidth = 2.5; g.beginPath(); g.ellipse(0, -40, 8, 2.6, 0, 0, 7); g.stroke();
+  g.strokeStyle = "#E8C3A0"; g.lineWidth = 4; g.lineCap = "round"; g.beginPath(); g.moveTo(dir * 5, -14); g.lineTo(dir * 22, -18 + Math.sin(S.t * 6) * 2); g.stroke();
+  if (!a.given) { heartPath(dir * 27, -18, 7); g.fillStyle = "#F07E8C"; g.fill(); }
+  g.restore();
+}
 function rr(x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
 function draw() {
   g.save();
@@ -323,9 +353,18 @@ function draw() {
   for (let y = -140 + S.side; y < H + 140; y += 140) {
     [rx - 18, rx + rw + 18].forEach(x => { const rg = g.createRadialGradient(x, y, 0, x, y, 40); rg.addColorStop(0, "rgba(233,138,58,.55)"); rg.addColorStop(1, "rgba(233,138,58,0)"); g.fillStyle = rg; g.fillRect(x - 40, y - 40, 80, 80); g.fillStyle = "#F5C08A"; g.beginPath(); g.arc(x, y, 3, 0, 7); g.fill(); });
   }
+  // anjo na beira
+  if (S.angel) drawAngel(S.angel, rx, rw);
   // itens
   S.items.forEach(it => {
     const x = laneX(it.lane), y = it.y;
+    if (it.kind === "heart") {
+      const p = 1 + Math.sin(S.t * 8) * .1;
+      g.save(); g.translate(x, y); g.scale(p, p);
+      const rg = g.createRadialGradient(0, 0, 0, 0, 0, 42); rg.addColorStop(0, "rgba(240,126,140,.55)"); rg.addColorStop(1, "rgba(240,126,140,0)"); g.fillStyle = rg; g.fillRect(-42, -42, 84, 84);
+      heartPath(0, 2, 20); g.fillStyle = "#F07E8C"; g.fill(); g.lineWidth = 2.5; g.strokeStyle = C.creme; g.stroke();
+      g.restore(); return;
+    }
     if (it.kind === "note") {
       const p = 1 + Math.sin(S.t * 6 + y * .02) * .06;
       g.save(); g.translate(x, y); g.scale(p, p);
