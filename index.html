@@ -41,7 +41,7 @@ a.card:focus-visible{outline:3px solid var(--ambar);outline-offset:3px}
 .span2{grid-column:span 2}
 .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .shade::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(38,50,58,0) 35%,rgba(38,50,58,.92) 100%)}
-.card > *:not(.photo):not(.arrow):not(.logo):not(.ripple):not(.tint):not(.road){position:relative;z-index:1}
+.card > *:not(.photo):not(.arrow):not(.logo):not(.ripple):not(.tint):not(.road):not(.stack){position:relative;z-index:1}
 .label{font-family:var(--ui);font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--clara)}
 .title{font-family:var(--display);text-transform:uppercase;font-weight:400;line-height:.9;letter-spacing:-.5px;margin:0}
 .t-xl{font-size:clamp(48px,13vw,92px)} .t-l{font-size:clamp(30px,8vw,48px)} .t-m{font-size:clamp(24px,6vw,32px)}
@@ -139,6 +139,19 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;paddin
 @media (max-width:420px){.ed .row.show{grid-template-columns:80px 1fr 60px}.ed .row.show .ico{grid-column:1/-1}}
 
 
+/* bloco fotos oficiais */
+.fotos{min-height:230px;background:#1F2A31}
+.fotos .stack{position:absolute;top:18px;bottom:18px;right:6%;width:44%;max-width:230px;pointer-events:none}
+.fotos .stack img{position:absolute;top:50%;left:50%;width:46%;aspect-ratio:2/3;object-fit:cover;border-radius:10px;border:3px solid var(--creme);box-shadow:0 10px 24px rgba(0,0,0,.45);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.fotos .stack img:nth-child(1){transform:translate(-112%,-48%) rotate(-9deg)}
+.fotos .stack img:nth-child(2){transform:translate(12%,-52%) rotate(8deg)}
+.fotos .stack img:nth-child(3){transform:translate(-50%,-50%);z-index:1}
+a.fotos:hover .stack img:nth-child(1){transform:translate(-128%,-50%) rotate(-13deg)}
+a.fotos:hover .stack img:nth-child(2){transform:translate(28%,-54%) rotate(12deg)}
+a.fotos:hover .stack img:nth-child(3){transform:translate(-50%,-56%) scale(1.05)}
+.fotos .jsub{font-size:13px;font-weight:700;color:var(--suave);margin-top:6px;max-width:50%}
+.fotos .label,.fotos .title{max-width:50%}
+.fotos .arrow{background:rgba(243,236,226,.12)}
 /* bloco do jogo */
 .jogo{min-height:230px;background:#1F2A31}
 .jogo .road{position:absolute;top:0;bottom:0;right:8%;width:46%;max-width:240px;background:var(--noite);overflow:hidden;
@@ -334,6 +347,16 @@ function render(d) {
       el("span", { class: "jsub", text: "Leve a gente pelas 36 cidades da turnê" })
     ]);
     a.setAttribute("aria-label", "Jogar Na Estrada, o mini game do GBA Worship");
+    grid.appendChild(a); }
+
+  // bloco fotos oficiais
+  { const a = el("a", { class: "card fotos span2", href: "fotos.html" }, [
+      el("span", { class: "stack", "aria-hidden": "true", html: '<img src="fotos/thumbs/gba-worship-08.webp" alt="" loading="lazy"><img src="fotos/thumbs/gba-worship-10.webp" alt="" loading="lazy"><img src="fotos/thumbs/gba-worship-11.webp" alt="" loading="lazy">' }),
+      el("span", { class: "arrow", "aria-hidden": "true", html: ICON.arrow.replace('stroke="#26323A"', 'stroke="#F3ECE2"') }),
+      lbl("Kit de divulgação"), ttl("Fotos oficiais", "t-l"),
+      el("span", { class: "jsub", text: "Escolha e baixe em alta para divulgar seu evento" })
+    ]);
+    a.setAttribute("aria-label", "Fotos oficiais do GBA Worship para baixar");
     grid.appendChild(a); }
 
   if (has(d.ultimoClipe)) grid.appendChild(link("clipe shade span2", d.ultimoClipe, [

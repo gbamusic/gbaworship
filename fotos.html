@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fotos oficiais · GBA Worship</title>
+<meta name="description" content="Fotos oficiais do GBA Worship para divulgação de shows e eventos.">
+<meta property="og:title" content="Fotos oficiais · GBA Worship">
+<meta property="og:image" content="fotos/thumbs/gba-worship-11.webp">
+<meta name="theme-color" content="#1B242A">
+<link rel="icon" href="assets/logo.png">
+
+<!-- =====================================================================
+     EDITE AQUI: para adicionar uma foto, suba o arquivo em /fotos e a
+     miniatura em /fotos/thumbs (pode ser a mesma foto em tamanho menor),
+     e acrescente uma linha. Categorias: dupla, jessica, herrison, logo.
+     Logos pretos: use fundo: "claro" para aparecerem sobre fundo creme.
+     ===================================================================== -->
+<script>
+const KIT_ZIP = "fotos/kit-gba-worship.zip";
+const FOTOS = [
+  { arquivo: "gba-worship-11.jpg", cat: "dupla", nome: "Dupla de costas" },
+  { arquivo: "gba-worship-03.jpg", cat: "dupla", nome: "Dupla com violão" },
+  { arquivo: "gba-worship-04.jpg", cat: "dupla", nome: "Dupla na poltrona" },
+  { arquivo: "gba-worship-10.jpg", cat: "jessica", nome: "Jéssica sorrindo" },
+  { arquivo: "gba-worship-09.jpg", cat: "jessica", nome: "Jéssica" },
+  { arquivo: "gba-worship-08.jpg", cat: "herrison", nome: "Herrison sorrindo" },
+  { arquivo: "gba-worship-02.jpg", cat: "herrison", nome: "Herrison na poltrona" },
+  { arquivo: "gba-worship-07.jpg", cat: "herrison", nome: "Herrison de corpo inteiro" },
+  { arquivo: "gba-worship-05.jpg", cat: "herrison", nome: "Herrison de perfil" },
+  { arquivo: "gba-worship-06.jpg", cat: "herrison", nome: "Herrison olhando para cima" },
+  { arquivo: "gba-worship-logo-completo-preto.png", cat: "logo", fundo: "claro", nome: "Logo completo · preto" },
+  { arquivo: "gba-worship-logo-completo-branco.png", cat: "logo", nome: "Logo completo · branco" },
+  { arquivo: "gba-worship-logo-nome-preto.png", cat: "logo", fundo: "claro", nome: "Nome GBA Worship · preto" },
+  { arquivo: "gba-worship-logo-simbolo-preto.png", cat: "logo", fundo: "claro", nome: "Símbolo · preto" },
+  { arquivo: "gba-worship-logo-simbolo-branco.png", cat: "logo", nome: "Símbolo · branco" },
+  { arquivo: "gba-worship-logo-assinatura-preto.png", cat: "logo", fundo: "claro", nome: "Assinatura gbaw · preto" },
+  { arquivo: "gba-worship-logo-assinatura-branco.png", cat: "logo", nome: "Assinatura gbaw · branco" }
+];
+</script>
+<!-- ===================================================================== -->
+
+<style>
+@font-face{font-family:'Anton';src:url(assets/anton.woff2) format('woff2');font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F}
+@font-face{font-family:'Anton';src:url(assets/anton-ext.woff2) format('woff2');font-display:swap;unicode-range:U+0100-02AF,U+1E00-1EFF}
+@font-face{font-family:'Manrope';font-weight:600;src:url(assets/manrope-600.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Manrope';font-weight:700;src:url(assets/manrope-700.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Manrope';font-weight:800;src:url(assets/manrope-800.woff2) format('woff2');font-display:swap}
+:root{--noite:#26323A;--funda:#3E505B;--nevoa:#5E7480;--clara:#A9B8BF;--suave:#C9D3D8;--creme:#F3ECE2;--ambar:#E98A3A;--bg:#1B242A;
+  --display:'Anton',Impact,sans-serif;--ui:'Manrope',system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--creme);font-family:var(--ui);line-height:1.5;padding:max(16px,env(safe-area-inset-top)) 16px max(32px,env(safe-area-inset-bottom))}
+.bg{position:fixed;inset:-20vmax;z-index:-1;pointer-events:none;filter:blur(60px)}
+.bg i{position:absolute;border-radius:50%;mix-blend-mode:screen}
+.bg i:nth-child(1){width:60vmax;height:60vmax;left:5%;top:0;background:radial-gradient(circle,rgba(94,116,128,.5),transparent 65%);animation:d1 26s ease-in-out infinite alternate}
+.bg i:nth-child(2){width:46vmax;height:46vmax;right:0;top:35%;background:radial-gradient(circle,rgba(233,138,58,.12),transparent 65%);animation:d2 32s ease-in-out infinite alternate}
+@keyframes d1{to{transform:translate(18vmax,22vmax)}}@keyframes d2{to{transform:translate(-22vmax,-14vmax)}}
+.wrap{max-width:1040px;margin:0 auto}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ib{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--creme);background:rgba(38,50,58,.7);text-decoration:none;border:0;cursor:pointer}
+.ib svg{width:22px;height:22px}
+.ib:focus-visible,.chip:focus-visible,.btn:focus-visible,.ph button:focus-visible,.dl:focus-visible{outline:3px solid var(--ambar);outline-offset:3px}
+h1{margin:22px 0 0;font:400 clamp(56px,15vw,104px)/.86 var(--display);text-transform:uppercase;letter-spacing:-1px}
+h1 span{color:var(--ambar)}
+.lead{margin:14px 0 0;max-width:560px;font-size:15px;font-weight:600;color:var(--suave)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 22px;border-radius:14px;border:0;font:800 15px var(--ui);text-decoration:none;cursor:pointer;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn.pri{background:var(--ambar);color:var(--noite)}
+.btn svg{width:20px;height:20px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:20px}
+.size{font-size:12px;font-weight:700;color:var(--clara)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 14px}
+.chip{min-height:40px;padding:0 16px;border-radius:20px;border:1.5px solid rgba(169,184,191,.35);background:transparent;color:var(--suave);font:800 13px var(--ui);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--creme);color:var(--noite);border-color:var(--creme)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (min-width:880px){.grid{grid-template-columns:repeat(4,1fr)}}
+.ph{margin:0;position:relative;border-radius:16px;overflow:hidden;background:var(--noite);opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.ph.in{opacity:1;transform:none}
+.ph button{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.ph img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.ph:hover img{transform:scale(1.04)}
+.ph.logo{display:flex;flex-direction:column}
+.ph.logo button{flex:1;background:var(--nevoa);padding:18px;display:grid;place-items:center}
+.ph.logo img{aspect-ratio:1;object-fit:contain}
+.ph.logo .cap{position:static;background:var(--noite);padding:10px;align-items:center}
+.ph.logo.claro button{background:var(--creme)}
+.lb.logo img{background:var(--nevoa);padding:24px;max-width:min(100%,560px)}
+.lb.logo.claro img{background:var(--creme)}
+.ph .cap{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding:30px 10px 10px;background:linear-gradient(180deg,transparent,rgba(27,36,42,.9));pointer-events:none}
+.ph .cap span{font-size:12px;font-weight:700;color:var(--suave);line-height:1.3}
+.dl{pointer-events:auto;flex-shrink:0;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--creme);color:var(--noite);text-decoration:none;transition:transform .2s}
+.dl:hover{transform:scale(1.08)}
+.dl svg{width:20px;height:20px}
+.note{margin-top:22px;font-size:13px;font-weight:600;color:var(--clara);max-width:560px}
+.lb{position:fixed;inset:0;z-index:20;background:rgba(15,20,24,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px}
+.lb img{max-width:100%;max-height:calc(100vh - 150px);border-radius:12px;object-fit:contain}
+.lb .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.lb .t{font-size:14px;font-weight:700;color:var(--suave)}
+.lb .x{position:absolute;top:max(12px,env(safe-area-inset-top));right:12px}
+.lb .nav{position:absolute;top:50%;transform:translateY(-50%)}
+.lb .prev{left:8px}.lb .next{right:8px}
+@media (prefers-reduced-motion:reduce){.bg i{animation:none}.ph{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i></i><i></i></div>
+<main class="wrap">
+  <div class="top"><a class="ib" href="./" aria-label="Voltar para o site"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></a></div>
+  <h1>Fotos<br><span>oficiais</span></h1>
+  <p class="lead">Kit de divulgação do GBA Worship para shows, eventos e paróquias. Escolha a foto, toque para ver maior e baixe em alta resolução.</p>
+  <div class="actions">
+    <a class="btn pri" id="kit" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Baixar kit completo</a>
+    <span class="size" id="kitInfo"></span>
+  </div>
+  <div class="chips" role="group" aria-label="Filtrar fotos">
+    <button class="chip" type="button" data-f="todas" aria-pressed="true">Todas</button>
+    <button class="chip" type="button" data-f="dupla" aria-pressed="false">Dupla</button>
+    <button class="chip" type="button" data-f="jessica" aria-pressed="false">Jéssica</button>
+    <button class="chip" type="button" data-f="herrison" aria-pressed="false">Herrison</button>
+    <button class="chip" type="button" data-f="logo" aria-pressed="false">Logo</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <p class="note">Ao postar, marque <b>@gbaworship</b>. Não recorte o rosto dos artistas nem aplique filtros que alterem a cor da pele.</p>
+</main>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Foto ampliada">
+  <button class="ib x" type="button" id="lbClose" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="ib nav prev" type="button" id="lbPrev" aria-label="Foto anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <button class="ib nav next" type="button" id="lbNext" aria-label="Próxima foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+  <img id="lbImg" alt="">
+  <div class="bar"><span class="t" id="lbName"></span><a class="btn pri" id="lbDl" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span id="lbDlT">Baixar foto</span></a></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const DL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>';
+const thumb = f => "fotos/thumbs/" + f.replace(/\.(jpe?g|png)$/i, ".webp");
+const full = f => "fotos/" + f;
+$("kit").href = KIT_ZIP;
+$("kitInfo").textContent = FOTOS.length + " arquivos em alta resolução (.zip)";
+let filtro = "todas", visiveis = [];
+function render() {
+  const grid = $("grid"); grid.textContent = "";
+  visiveis = FOTOS.filter(f => filtro === "todas" || f.cat === filtro);
+  visiveis.forEach((f, i) => {
+    const fig = document.createElement("figure"); fig.className = "ph" + (f.cat === "logo" ? " logo" : "") + (f.fundo === "claro" ? " claro" : "");
+    const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", "Ver maior: " + f.nome);
+    const img = document.createElement("img"); img.src = thumb(f.arquivo); img.alt = f.nome; img.loading = "lazy";
+    b.appendChild(img); b.addEventListener("click", () => open(i));
+    const cap = document.createElement("figcaption"); cap.className = "cap";
+    const s = document.createElement("span"); s.textContent = f.nome;
+    const a = document.createElement("a"); a.className = "dl"; a.href = full(f.arquivo); a.download = f.arquivo; a.innerHTML = DL; a.setAttribute("aria-label", "Baixar " + f.nome);
+    cap.append(s, a); fig.append(b, cap); grid.appendChild(fig);
+    setTimeout(() => fig.classList.add("in"), 60 + i * 50);
+  });
+}
+document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
+  filtro = c.dataset.f; document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", String(x === c))); render();
+}));
+let cur = 0, lastFocus;
+function show(i) { cur = (i + visiveis.length) % visiveis.length; const f = visiveis[cur];
+  $("lb").classList.toggle("logo", f.cat === "logo"); $("lb").classList.toggle("claro", f.fundo === "claro"); $("lbImg").src = full(f.arquivo); $("lbImg").alt = f.nome; $("lbName").textContent = f.nome; $("lbDlT").textContent = f.cat === "logo" ? "Baixar logo" : "Baixar foto"; $("lbDl").href = full(f.arquivo); $("lbDl").download = f.arquivo; }
+function open(i) { lastFocus = document.activeElement; show(i); $("lb").hidden = false; $("lbClose").focus(); document.body.style.overflow = "hidden"; }
+function close() { $("lb").hidden = true; document.body.style.overflow = ""; lastFocus && lastFocus.focus(); }
+$("lbClose").addEventListener("click", close);
+$("lbPrev").addEventListener("click", () => show(cur - 1));
+$("lbNext").addEventListener("click", () => show(cur + 1));
+$("lb").addEventListener("click", e => { if (e.target === $("lb")) close(); });
+addEventListener("keydown", e => { if ($("lb").hidden) return; if (e.key === "Escape") close(); if (e.key === "ArrowLeft") show(cur - 1); if (e.key === "ArrowRight") show(cur + 1); });
+let sx = null; $("lb").addEventListener("touchstart", e => sx = e.touches[0].clientX, { passive: true });
+$("lb").addEventListener("touchend", e => { if (sx === null) return; const d = e.changedTouches[0].clientX - sx; if (Math.abs(d) > 50) show(cur + (d < 0 ? 1 : -1)); sx = null; });
+render();
+})();
+</script>
+</body>
+</html>
