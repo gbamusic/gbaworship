@@ -41,7 +41,7 @@ a.card:focus-visible{outline:3px solid var(--ambar);outline-offset:3px}
 .span2{grid-column:span 2}
 .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .shade::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(38,50,58,0) 35%,rgba(38,50,58,.92) 100%)}
-.card > *:not(.photo):not(.arrow):not(.logo):not(.ripple):not(.tint){position:relative;z-index:1}
+.card > *:not(.photo):not(.arrow):not(.logo):not(.ripple):not(.tint):not(.road){position:relative;z-index:1}
 .label{font-family:var(--ui);font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--clara)}
 .title{font-family:var(--display);text-transform:uppercase;font-weight:400;line-height:.9;letter-spacing:-.5px;margin:0}
 .t-xl{font-size:clamp(48px,13vw,92px)} .t-l{font-size:clamp(30px,8vw,48px)} .t-m{font-size:clamp(24px,6vw,32px)}
@@ -139,6 +139,25 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;paddin
 @media (max-width:420px){.ed .row.show{grid-template-columns:80px 1fr 60px}.ed .row.show .ico{grid-column:1/-1}}
 
 
+/* bloco do jogo */
+.jogo{min-height:230px;background:#1F2A31}
+.jogo .road{position:absolute;top:0;bottom:0;right:8%;width:46%;max-width:240px;background:var(--noite);overflow:hidden;
+  -webkit-mask:linear-gradient(180deg,transparent,#000 18%,#000 82%,transparent);mask:linear-gradient(180deg,transparent,#000 18%,#000 82%,transparent)}
+.jogo .road i{position:absolute;top:-60px;bottom:-60px;width:3px;background:repeating-linear-gradient(180deg,rgba(243,236,226,.45) 0 22px,transparent 22px 46px);animation:lane .6s linear infinite}
+.jogo .road i:nth-child(1){left:33%}.jogo .road i:nth-child(2){left:66%}
+@keyframes lane{to{transform:translateY(46px)}}
+.jogo .pt{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--ambar);box-shadow:0 0 18px rgba(233,138,58,.6);animation:fall 2.4s linear infinite}
+.jogo .p1{left:calc(16.5% - 11px);animation-delay:-.4s}.jogo .p2{left:calc(83.5% - 11px);animation-delay:-1.4s}.jogo .p3{left:calc(50% - 11px);animation-delay:-2s;background:var(--creme);box-shadow:0 0 18px rgba(243,236,226,.5)}
+@keyframes fall{from{top:-30px}to{top:110%}}
+.jogo .van{position:absolute;bottom:22px;left:calc(50% - 20px);width:40px;height:72px;border-radius:10px;background:var(--creme);box-shadow:0 8px 20px rgba(0,0,0,.4);animation:swerve 4.8s ease-in-out infinite}
+.jogo .van .w{position:absolute;top:8px;left:6px;right:6px;height:16px;border-radius:4px;background:var(--noite)}
+.jogo .van .s{position:absolute;top:40px;left:0;right:0;height:7px;background:var(--ambar)}
+.jogo .van .t{position:absolute;bottom:6px;left:0;right:0;text-align:center;font:400 11px var(--display);color:var(--noite)}
+@keyframes swerve{0%,20%{transform:translateX(0)}30%,50%{transform:translateX(-135%) rotate(-4deg)}55%{transform:translateX(-135%)}65%,85%{transform:translateX(135%) rotate(4deg)}90%{transform:translateX(135%)}100%{transform:translateX(0)}}
+.jogo .arrow{background:rgba(243,236,226,.12)}
+.jogo .jsub{font-size:13px;font-weight:700;color:var(--suave);margin-top:6px;max-width:52%}
+.jogo .label,.jogo .title{max-width:52%}
+@media (prefers-reduced-motion:reduce){.jogo .road i,.jogo .pt,.jogo .van{animation:none}}
 /* ===== fundo vivo ===== */
 body{background:var(--bg);position:relative;overflow-x:hidden}
 .bg{position:fixed;inset:-20vmax;z-index:-2;pointer-events:none;filter:blur(60px);opacity:.9}
@@ -306,6 +325,16 @@ function render(d) {
     const kids = [lbl("Próximos shows"), ul, el("span", { class: "more", text: wa ? "WhatsApp →" : "" })];
     grid.appendChild(wa ? link("agenda", wa, kids, "Próximos shows: falar no WhatsApp") : el("section", { class: "card agenda" }, kids));
   }
+
+  // bloco do jogo
+  { const a = el("a", { class: "card jogo span2", href: "estrada.html" }, [
+      el("span", { class: "road", "aria-hidden": "true", html: '<i></i><i></i><b class="pt p1"></b><b class="pt p2"></b><b class="pt p3"></b><span class="van"><span class="w"></span><span class="s"></span><span class="t">GBA</span></span>' }),
+      el("span", { class: "arrow", "aria-hidden": "true", html: ICON.arrow.replace('stroke="#26323A"', 'stroke="#F3ECE2"') }),
+      lbl("Mini game"), ttl("Na estrada", "t-l"),
+      el("span", { class: "jsub", text: "Leve a gente pelas 36 cidades da turnê" })
+    ]);
+    a.setAttribute("aria-label", "Jogar Na Estrada, o mini game do GBA Worship");
+    grid.appendChild(a); }
 
   if (has(d.ultimoClipe)) grid.appendChild(link("clipe shade span2", d.ultimoClipe, [
     thumbFor(d.ultimoClipe),
