@@ -9,6 +9,11 @@
   "tiktok": "https://www.tiktok.com/@gbaworship",
   "youtube": "https://youtube.com/playlist?list=PLR5pnPeqPRUv1txJMSHjTBrwLwYcW1zrZ&si=5KDHS5nnHP1xOZkF",
   "cifras": "https://www.cifraclub.com.br/gba-worship/",
-  "recentes": [],
+  "recentes": [
+    {
+      "titulo": "Assista \"Viva Jesus\"",
+      "link": "https://www.youtube.com/watch?v=ihRu_5DXnV8"
+    }
+  ],
   "shows": []
 }
