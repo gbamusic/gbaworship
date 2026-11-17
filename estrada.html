@@ -20,17 +20,24 @@ const HISTORIA = {
   linha2: "numa noite de estreia no cinema.",
   linha3: "E desde então, a gente não saiu mais da estrada."
 };
-// Músicas: abertura + uma por cidade (vão revezando em ordem)
-const ABERTURA = "assets/musicas/abertura.mp3";
+// Músicas: uma por cidade (vão revezando em ordem)
+const WHATSAPP = "https://api.whatsapp.com/send/?phone=5511986692248&text=Ol%C3%A1%21+Quero+levar+o+GBA+Worship+para+a+minha+cidade.&type=phone_number&app_absent=0";
 const MUSICAS = [
   ["Ainda Bem","assets/musicas/ainda-bem.mp3"],
   ["Desejado Entre as Nações","assets/musicas/desejado-entre-as-nacoes.mp3"],
   ["Quando o Céu Toca a Terra","assets/musicas/quando-o-ceu-toca-a-terra.mp3"],
+  ["Ninguém Me Amou Como Você","assets/musicas/ninguem-me-amou-como-voce.mp3"],
   ["Abala as Estruturas","assets/musicas/abala-as-estruturas.mp3"],
+  ["Todo Pranto","assets/musicas/todo-pranto.mp3"],
   ["A Bondade do Senhor","assets/musicas/a-bondade-do-senhor.mp3"],
+  ["Eu Nasci Pra Isso","assets/musicas/eu-nasci-pra-isso.mp3"],
   ["Derramo o Louvor","assets/musicas/derramo-o-louvor.mp3"],
+  ["Cheiro de Rosas","assets/musicas/cheiro-de-rosas.mp3"],
   ["Rei da Glória","assets/musicas/rei-da-gloria.mp3"],
+  ["Nunca é Pedir Demais","assets/musicas/nunca-e-pedir-demais.mp3"],
   ["Faz Tudo Novo Aqui","assets/musicas/faz-tudo-novo-aqui.mp3"],
+  ["Diante do Rei","assets/musicas/diante-do-rei.mp3"],
+  ["Onde Tu Estás","assets/musicas/onde-tu-estas.mp3"],
   ["Cântico de Maria","assets/musicas/cantico-de-maria.mp3"],
   ["Grato Sou","assets/musicas/grato-sou.mp3"],
   ["Pai Nosso","assets/musicas/pai-nosso.mp3"]
@@ -79,7 +86,7 @@ canvas{display:block;width:100%;height:100%}
 .how{display:flex;flex-wrap:wrap;gap:10px 16px;margin:16px 0 0;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--clara)}
 .how span{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .how i{width:14px;height:14px;border-radius:50%;background:var(--ambar);display:inline-block}
-.how i.c{background:var(--clara);border-radius:3px;transform:rotate(45deg)}
+.how i.c{background:#FFD23F;border-radius:2px;clip-path:polygon(50% 0,100% 100%,0 100%)}
 .btns{display:grid;gap:8px;margin-top:22px}
 .btn{min-height:54px;border:0;border-radius:14px;font:800 16px var(--ui);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:transform .1s}
 .btn:active{transform:scale(.97)}
@@ -122,6 +129,10 @@ canvas{display:block;width:100%;height:100%}
 .mute{position:absolute;right:12px;bottom:max(14px,env(safe-area-inset-bottom));z-index:7;width:44px;height:44px;border-radius:50%;border:0;background:rgba(38,50,58,.8);color:var(--creme);display:grid;place-items:center;cursor:pointer}
 .mute svg{width:20px;height:20px}
 .mute:focus-visible,.tap:focus-visible{outline:3px solid var(--ambar);outline-offset:3px}
+.pbtn{pointer-events:auto;border:0;color:var(--creme);cursor:pointer;width:44px;justify-content:center;padding:0}
+.pbtn svg{width:16px;height:16px}
+.pbtn:focus-visible{outline:3px solid var(--ambar);outline-offset:2px}
+#sPause{background:rgba(27,36,42,.86);justify-content:center}
 </style>
 </head>
 <body>
@@ -129,7 +140,7 @@ canvas{display:block;width:100%;height:100%}
   <canvas id="c" aria-label="Jogo Na Estrada: van do GBA Worship numa estrada com três faixas"></canvas>
 
   <div class="hud" id="hud" hidden>
-    <div class="top"><span class="pill">♪ <span class="n" id="hNotes">0</span></span><span class="pill" id="hCity">Cidade 1/36</span><span class="pill hearts" id="hLife" aria-label="Vidas">♥♥</span></div>
+    <div class="top"><button class="pill pbtn" id="bPause" type="button" aria-label="Pausar"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><span class="pill">♪ <span class="n" id="hNotes">0</span></span><span class="pill" id="hCity">Cidade 1/36</span><span class="pill hearts" id="hLife" aria-label="Vidas">♥♥</span></div>
     <div class="leg"><div class="names"><b id="hFrom"></b><span id="hTo"></span></div><div class="bar"><i id="hBar"></i></div><div class="song" id="song"><i></i><span id="songName"></span></div></div>
   </div>
   <div class="city" id="city" aria-live="polite"><small>Chegamos em</small><b id="cName"></b><span id="cUf"></span></div>
@@ -147,14 +158,25 @@ canvas{display:block;width:100%;height:100%}
     <div class="btns"><button class="btn pri" type="button" id="bPlay">Bora pra estrada</button></div>
   </section>
 
+  <section class="screen" id="sPause" hidden>
+    <h2>Pausa<br><span class="amb">pro café</span></h2>
+    <p id="pInfo"></p>
+    <div class="btns">
+      <button class="btn pri" type="button" id="bResume">Continuar viagem</button>
+      <button class="btn sec" type="button" id="bRestart">Recomeçar</button>
+      <button class="btn sec" type="button" id="bHomeP">Voltar ao início</button>
+    </div>
+  </section>
   <section class="screen" id="sEnd" hidden>
+    <a class="ib" href="./" aria-label="Voltar para o site"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></a>
     <h2 id="eTitle">Fim da<br><span class="amb">viagem</span></h2>
     <p id="eMsg"></p>
     <div class="stats"><div><b id="eCities">0</b><span>cidades</span></div><div><b id="eNotes">0</b><span>notas</span></div><div><b id="eBest">0</b><span>recorde</span></div></div>
     <div class="btns">
       <button class="btn pri" type="button" id="bAgain">Jogar de novo</button>
       <button class="btn sec" type="button" id="bShare">Compartilhar</button>
-      <a class="btn sec" id="bCity" href="./">Leve a gente pra sua cidade</a>
+      <button class="btn sec" type="button" id="bHome">Voltar ao início</button>
+      <a class="btn sec" id="bCity" href="./" target="_blank" rel="noopener">Leve a gente pra sua cidade</a>
     </div>
   </section>
   <div class="toast" id="toast" role="status"></div>
@@ -171,7 +193,7 @@ let W = 0, H = 0, DPR = 1;
 function resize() { const r = cv.getBoundingClientRect(); DPR = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height; cv.width = W * DPR; cv.height = H * DPR; g.setTransform(DPR, 0, 0, DPR, 0, 0); }
 addEventListener("resize", resize); resize();
 $("nCities").textContent = CIDADES.length;
-fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => { if (d.whatsapp) $("bCity").href = "https://wa.me/" + String(d.whatsapp).replace(/\D/g, "") + "?text=" + encodeURIComponent(d.whatsappMensagem || ""); }).catch(() => {});
+$("bCity").href = WHATSAPP;
 let best = 0; try { best = +localStorage.getItem("gbaw-estrada-best") || 0; } catch (e) {}
 
 // som
@@ -188,7 +210,7 @@ const NOTES = [523.25, 587.33, 659.25, 783.99, 880];
 const LEG_TIME = 22; // segundos por trecho entre cidades
 let S;
 function reset() {
-  S = { run: false, t: 0, lane: 1, vx: 1, speed: 260, items: [], spawn: .8, notes: 0, life: 2, city: 0, leg: 0, inv: 0, dash: 0, shake: 0, side: 0, parts: [], noteIdx: 0, cel: 0 };
+  S = { run: false, t: 0, lane: 1, vx: 1, speed: 260, items: [], spawn: .8, notes: 0, life: 2, city: 0, leg: 0, inv: 0, dash: 0, shake: 0, side: 0, parts: [], noteIdx: 0, cel: 0, paused: false };
 }
 reset();
 const laneX = l => W / 2 + (l - 1) * Math.min(W * .26, 130);
@@ -201,7 +223,7 @@ function spawn() {
   if (kind === "cone" && Math.random() < .35 + Math.min(.3, S.city * .015)) S.items.push({ kind: "cone", lane: lanes[1], y: -40 });
   else if (Math.random() < .3) S.items.push({ kind: "note", lane: lanes[1], y: -120 });
 }
-function move(dir) { if (!S.run) return; S.lane = Math.max(0, Math.min(2, S.lane + dir)); }
+function move(dir) { if (!S.run || S.paused) return; S.lane = Math.max(0, Math.min(2, S.lane + dir)); }
 addEventListener("keydown", e => { if (e.key === "ArrowLeft" || e.key === "a") move(-1); else if (e.key === "ArrowRight" || e.key === "d") move(1); });
 let tx = null;
 $("wrap").addEventListener("pointerdown", e => { if (!S.run) return; tx = e.clientX; });
@@ -321,9 +343,12 @@ function draw() {
     } else {
       g.save(); g.translate(x, y);
       g.fillStyle = "rgba(0,0,0,.3)"; g.beginPath(); g.ellipse(0, 20, 24, 7, 0, 0, 7); g.fill();
-      g.fillStyle = C.clara; g.beginPath(); g.moveTo(0, -24); g.lineTo(18, 18); g.lineTo(-18, 18); g.closePath(); g.fill();
-      g.fillStyle = C.creme; g.fillRect(-10, -2, 20, 6);
-      g.fillStyle = C.funda; rr(-24, 16, 48, 8, 3); g.fill();
+      g.fillStyle = "#2A2A2A"; rr(-23, 12, 46, 11, 3); g.fill();
+      const cg = g.createLinearGradient(-16, 0, 16, 0); cg.addColorStop(0, "#E0A800"); cg.addColorStop(.45, "#FFD23F"); cg.addColorStop(1, "#C99200");
+      g.fillStyle = cg; g.beginPath(); g.moveTo(-4, -26); g.lineTo(4, -26); g.lineTo(17, 14); g.lineTo(-17, 14); g.closePath(); g.fill();
+      g.fillStyle = "#FFFFFF"; g.beginPath(); g.moveTo(-9.5, -6); g.lineTo(9.5, -6); g.lineTo(11.5, 0); g.lineTo(-11.5, 0); g.closePath(); g.fill();
+      g.beginPath(); g.moveTo(-5.5, -18); g.lineTo(5.5, -18); g.lineTo(7, -13); g.lineTo(-7, -13); g.closePath(); g.fill();
+      g.fillStyle = "#FFE680"; g.beginPath(); g.ellipse(0, -26, 4, 1.6, 0, 0, 7); g.fill();
       g.restore();
     }
   });
@@ -337,7 +362,7 @@ function draw() {
   g.fillStyle = C.creme; rr(-28, -60, 56, 110, 14); g.fill();
   g.fillStyle = C.noite; rr(-22, -48, 44, 22, 6); g.fill();
   g.fillStyle = C.ambar; g.fillRect(-28, 0, 56, 10);
-  g.fillStyle = C.noite; g.font = "400 15px Anton, Impact, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("GBAW", 0, 28);
+  g.fillStyle = C.noite; g.font = "400 13px Anton, Impact, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("GBAW", 0, 28);
   g.fillStyle = "#F5C08A"; g.fillRect(-24, -60, 10, 4); g.fillRect(14, -60, 10, 4);
   g.fillStyle = "#c0392b"; g.fillRect(-24, 46, 10, 4); g.fillRect(14, 46, 10, 4);
   g.globalAlpha = 1;
@@ -368,6 +393,17 @@ function playTrack(url, name) {
   M.cur = { a, gn };
   if (name) { $("songName").textContent = "Tocando: " + name; $("song").classList.add("on"); }
 }
+function stopMusic(pauseOnly) {
+  if (!M.cur || !M.ctx) return; const c = M.cur, t = M.ctx.currentTime;
+  c.gn.gain.cancelScheduledValues(t); c.gn.gain.setValueAtTime(c.gn.gain.value, t); c.gn.gain.linearRampToValueAtTime(0, t + (pauseOnly ? .3 : 1.5));
+  setTimeout(() => { c.a.pause(); if (!pauseOnly) { c.a.src = ""; if (M.cur === c) M.cur = null; } }, pauseOnly ? 320 : 1600);
+  $("song").classList.remove("on");
+}
+function resumeMusic() {
+  if (!M.cur || !M.ctx) return; const c = M.cur, t = M.ctx.currentTime;
+  c.a.play().catch(() => {}); c.gn.gain.cancelScheduledValues(t); c.gn.gain.setValueAtTime(0, t); c.gn.gain.linearRampToValueAtTime(.9, t + .6);
+  $("song").classList.add("on");
+}
 function songFor(i) { const m = MUSICAS[i % MUSICAS.length]; playTrack(m[1], m[0]); }
 function setMute(v) {
   M.muted = v; if (M.master) { const t = M.ctx.currentTime; M.master.gain.cancelScheduledValues(t); M.master.gain.setValueAtTime(M.master.gain.value, t); M.master.gain.linearRampToValueAtTime(v ? 0 : 1, t + .4); }
@@ -379,7 +415,7 @@ $("mute").addEventListener("click", () => { audioInit(); if (M.ctx && M.ctx.stat
 document.addEventListener("visibilitychange", () => { if (!M.ctx) return; if (document.hidden) M.ctx.suspend(); else M.ctx.resume(); });
 
 /* ===== abertura: saída do cinema até a van ===== */
-const IN = { on: true, t: 0, dur: 9.2, go: false };
+const IN = { on: true, t: 0, dur: 9.2, go: true };
 $("i1").textContent = HISTORIA.linha1; $("i2").textContent = HISTORIA.linha2; $("i3").textContent = HISTORIA.linha3;
 const ease = x => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
 const seg = (t, a, b) => ease((t - a) / (b - a));
@@ -467,22 +503,15 @@ function endIntro() {
   $("intro").hidden = true; $("bSkip").hidden = true; $("sStart").hidden = false; $("bPlay").focus();
 }
 $("bSkip").addEventListener("click", endIntro);
-$("bSkip").hidden = true;
-function begin(withSound) {
-  $("tap").hidden = true; $("bSkip").hidden = false; $("mute").hidden = false;
-  audioInit(); if (!withSound) setMute(true); else setMute(M.muted);
-  if (M.ctx && M.ctx.state === "suspended") M.ctx.resume();
-  playTrack(ABERTURA, "");
-  IN.go = true; if (reduce) endIntro();
-}
-$("tapMute").addEventListener("click", e => { e.stopPropagation(); M.muted = true; begin(false); });
-$("tap").addEventListener("click", () => begin(!M.muted));
+$("tap").hidden = true; $("bSkip").hidden = false; $("mute").hidden = false; setMute(M.muted);
+if (reduce) endIntro();
 let last = 0, raf;
-function loop(t) { const dt = Math.min(.05, (t - last) / 1000 || 0); last = t; if (IN.on) { g.save(); drawIntro(dt); g.restore(); raf = requestAnimationFrame(loop); return; } if (S.run) update(dt); else { S.dash = (S.dash + 60 * dt) % 60; S.side = (S.side + 50 * dt) % 140; } draw(); raf = requestAnimationFrame(loop); }
+function loop(t) { const dt = Math.min(.05, (t - last) / 1000 || 0); last = t; if (IN.on) { g.save(); drawIntro(dt); g.restore(); raf = requestAnimationFrame(loop); return; } if (S.run && !S.paused) update(dt); else { S.dash = (S.dash + 60 * dt) % 60; S.side = (S.side + 50 * dt) % 140; } draw(); raf = requestAnimationFrame(loop); }
 raf = requestAnimationFrame(loop);
 
 function startGame() {
-  reset(); S.run = true; $("sStart").hidden = true; $("sEnd").hidden = true; $("hud").hidden = false; hud();
+  audioInit(); if (M.ctx && M.ctx.state === "suspended") M.ctx.resume(); setMute(M.muted);
+  $("sPause").hidden = true; reset(); S.run = true; $("sStart").hidden = true; $("sEnd").hidden = true; $("hud").hidden = false; hud();
   const c = CIDADES[0]; $("cName").textContent = c[0]; $("cUf").textContent = c[1] + " · partida";
   $("city").firstElementChild.textContent = "Partindo de"; $("city").classList.add("show");
   setTimeout(() => { $("city").classList.remove("show"); $("city").firstElementChild.textContent = "Chegamos em"; }, 1600);
@@ -498,8 +527,17 @@ function end(won) {
   $("eTitle").innerHTML = won ? 'Turnê<br><span class="amb">completa!</span>' : 'Fim da<br><span class="amb">viagem</span>';
   $("eMsg").textContent = won ? "Você levou o GBA Worship por todas as cidades. Que estrada!" : "Você chegou até " + c[0] + " · " + c[1] + " e pegou " + S.notes + (S.notes === 1 ? " nota" : " notas") + ". Bora de novo?";
   setTimeout(() => { $("sEnd").hidden = false; $("bAgain").focus(); }, 500);
-  $("song").classList.remove("on"); playTrack(ABERTURA, "");
+  stopMusic(false);
 }
+function pause() { if (!S.run || S.paused) return; S.paused = true; stopMusic(true); const c = CIDADES[S.city % CIDADES.length]; $("pInfo").textContent = "Você está em " + c[0] + " · " + c[1] + ", com " + S.notes + (S.notes === 1 ? " nota" : " notas") + "."; $("sPause").hidden = false; $("bResume").focus(); }
+function resume() { if (!S.paused) return; S.paused = false; $("sPause").hidden = true; last = performance.now(); resumeMusic(); }
+function home() { if (S.run) { S.run = false; stopMusic(false); } S.paused = false; $("sPause").hidden = true; $("sEnd").hidden = true; $("hud").hidden = true; $("city").classList.remove("show"); $("sStart").hidden = false; $("bPlay").focus(); }
+$("bPause").addEventListener("click", pause);
+$("bResume").addEventListener("click", resume);
+$("bRestart").addEventListener("click", () => { stopMusic(false); S.run = false; startGame(); });
+$("bHomeP").addEventListener("click", home);
+$("bHome").addEventListener("click", home);
+addEventListener("keydown", e => { if ((e.key === "Escape" || e.key === "p") && S.run) { S.paused ? resume() : pause(); } });
 $("bPlay").addEventListener("click", startGame);
 $("bAgain").addEventListener("click", startGame);
 $("bShare").addEventListener("click", async () => {
@@ -508,7 +546,7 @@ $("bShare").addEventListener("click", async () => {
   try { await navigator.clipboard.writeText(text); toast("Copiado! Cole no story."); } catch (e) { toast("Não foi possível copiar"); }
 });
 let tT; function toast(m) { const t = $("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tT); tT = setTimeout(() => t.classList.remove("show"), 1800); }
-document.addEventListener("visibilitychange", () => { if (document.hidden && S.run) end(false); });
+document.addEventListener("visibilitychange", () => { if (document.hidden && S.run) pause(); });
 })();
 </script>
 </body>
