@@ -210,7 +210,7 @@ const NOTES = [523.25, 587.33, 659.25, 783.99, 880];
 const LEG_TIME = 22; // segundos por trecho entre cidades
 let S;
 function reset() {
-  S = { run: false, t: 0, lane: 1, vx: 1, speed: 260, items: [], spawn: .8, notes: 0, life: 3, city: 0, leg: 0, inv: 0, dash: 0, shake: 0, side: 0, parts: [], noteIdx: 0, cel: 0, paused: false, angel: null, angelCD: 0 };
+  S = { run: false, t: 0, lane: 1, vx: 1, speed: 260, items: [], spawn: .8, notes: 0, life: 3, city: 0, leg: 0, inv: 0, dash: 0, shake: 0, side: 0, parts: [], noteIdx: 0, cel: 0, paused: false, angel: null, angelT: null, angelUsed: false };
 }
 reset();
 const laneX = l => W / 2 + (l - 1) * Math.min(W * .26, 130);
@@ -267,21 +267,25 @@ function update(dt) {
     if (!it.hit && Math.abs(it.y - vy) < 44 && it.lane === S.lane) {
       it.hit = true;
       if (it.kind === "note") { const v = it.x2 ? 2 : 1; S.notes += v; S.leg += 1.1 * v; beep(NOTES[S.noteIdx++ % NOTES.length], .18); if (it.x2) setTimeout(() => beep(NOTES[(S.noteIdx + 1) % NOTES.length] * 2, .2), 90); burst(vxp, vy - 30, it.x2 ? C.creme : C.ambar); if (it.x2) burst(vxp, vy - 30, C.ambar); }
-      else if (it.kind === "heart") { S.life = Math.min(3, S.life + 1); if (S.angel) S.angel.given = true; [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => setTimeout(() => beep(f, .3, "sine", .1), i * 90)); burst(vxp, vy - 30, "#F07E8C"); burst(vxp, vy - 30, C.creme); toast("+1 vida! Obrigado, anjo"); }
+      else if (it.kind === "heart") { S.life = Math.min(3, S.life + 1); if (S.angel) S.angel.given = true; S.angelUsed = true; [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => setTimeout(() => beep(f, .3, "sine", .1), i * 90)); burst(vxp, vy - 30, "#F07E8C"); burst(vxp, vy - 30, C.creme); toast("+1 vida! Obrigado, anjo"); }
       else if (S.inv <= 0) { S.life--; S.inv = 1.2; S.shake = .35; beep(140, .3, "sawtooth", .08); burst(vxp, vy - 20, C.clara); if (navigator.vibrate) navigator.vibrate(80); if (S.life <= 0) end(false); }
     }
   });
   S.items = S.items.filter(it => it.y < H + 60 && !(it.hit && (it.kind === "note" || it.kind === "heart")));
   // anjo: aparece quando sobra uma vida
-  S.angelCD = Math.max(0, S.angelCD - dt);
-  if (S.life === 1 && !S.angel && S.angelCD <= 0) {
-    const side = Math.random() < .5 ? 0 : 2;
-    S.angel = { side, y: -90, given: false };
-    S.items = S.items.filter(it => !(it.y < 60 && it.lane === side));
-    S.items.push({ kind: "heart", lane: side, y: -70 });
-    S.angelCD = 16; toast("Um anjo na estrada! Pega o coração");
+  // uma única vez por partida: 7s depois de ficar com 1 vida; se não pegar, volta 20s depois
+  if (!S.angelUsed && S.life === 1 && !S.angel) {
+    if (S.angelT === null) S.angelT = 7;
+    S.angelT -= dt;
+    if (S.angelT <= 0) {
+      const side = Math.random() < .5 ? 0 : 2;
+      S.angel = { side, y: -90, given: false };
+      S.items = S.items.filter(it => !(it.y < 60 && it.lane === side));
+      S.items.push({ kind: "heart", lane: side, y: -70 });
+      toast("Um anjo na estrada! Pega o coração");
+    }
   }
-  if (S.angel) { S.angel.y += S.speed * dt; if (S.angel.y > H + 120) S.angel = null; }
+  if (S.angel) { S.angel.y += S.speed * dt; if (S.angel.y > H + 120) { if (!S.angel.given) S.angelT = 20; S.angel = null; } }
   S.parts.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; if (p.conf) { p.vy += 420 * dt; p.vx *= .985; p.r += dt * 8; } p.life -= dt; }); S.parts = S.parts.filter(p => p.life > 0);
   if (S.leg >= LEG_TIME) arrive();
   hud();
