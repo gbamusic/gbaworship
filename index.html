@@ -66,6 +66,8 @@ a.card:focus-visible{outline:3px solid var(--ambar);outline-offset:3px}
 .play{width:64px;height:64px;border-radius:32px;background:var(--creme);display:grid;place-items:center;margin-bottom:14px}
 .play svg{width:24px;height:24px;margin-left:3px}
 .clipe{min-height:260px}
+.photo.duo{filter:grayscale(1) contrast(1.15)}
+.tint{position:absolute;inset:0;background:var(--nevoa);mix-blend-mode:multiply;pointer-events:none}
 /* small */
 .mini{min-height:130px;background:var(--nevoa);justify-content:space-between}
 .mini svg.ic{width:30px;height:30px}
@@ -174,6 +176,16 @@ const svg = (s, hidden) => { const w = el("span", { html: s }); const n = w.firs
 const lbl = (t, style) => el("span", { class: "label", text: t, style: style || "" });
 const ttl = (t, cls) => el("span", { class: "title " + (cls || "t-m"), text: t, style: "display:block" });
 
+function ytId(u) {
+  const m = String(u || "").match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : "";
+}
+function thumbFor(u) {
+  const id = ytId(u);
+  const img = el("img", { class: "photo duo", alt: "", loading: "lazy", src: id ? "https://i.ytimg.com/vi/" + id + "/maxresdefault.jpg" : "assets/clipe.webp" });
+  if (id) img.addEventListener("error", function f() { img.removeEventListener("error", f); img.src = "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg"; });
+  return img;
+}
 function render(d) {
   const grid = el("div", { class: "grid" });
   const wa = has(d.whatsapp) ? "https://wa.me/" + d.whatsapp.replace(/\D/g, "") + "?text=" + encodeURIComponent(d.whatsappMensagem || "") : "";
@@ -217,7 +229,8 @@ function render(d) {
   }
 
   if (has(d.ultimoClipe)) grid.appendChild(link("clipe shade span2", d.ultimoClipe, [
-    el("img", { class: "photo", src: "assets/clipe.webp", alt: "", loading: "lazy" }),
+    thumbFor(d.ultimoClipe),
+    el("span", { class: "tint", "aria-hidden": "true" }),
     el("span", { class: "play", "aria-hidden": "true", html: ICON.play }), lbl("YouTube"), ttl(d.ultimoClipeNome || "Último clipe", "t-l")
   ]));
 
