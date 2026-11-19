@@ -554,7 +554,7 @@ document.addEventListener("pointerdown", e => {
 });
 
 /* ===== pad worship (gerado no navegador, sem arquivo) ===== */
-const PAD_FILE = ""; // opcional: "assets/pad.mp3" para usar um pad gravado
+const PAD_FILE = "assets/pad-ainda-bem.mp3"; // "Ainda Bem" bem baixinha, distante, passeando entre os fones. Deixe "" para usar o pad sintetizado
 let ctx, master, playing = false, audioEl, nodes = [];
 const btn = document.createElement("button");
 btn.type = "button"; btn.className = "pad"; btn.setAttribute("aria-pressed", "false"); btn.setAttribute("aria-label", "Tocar pad de fundo");
@@ -595,17 +595,18 @@ function stopSynth() {
   m.gain.cancelScheduledValues(t); m.gain.setValueAtTime(m.gain.value, t); m.gain.linearRampToValueAtTime(0, t + 2.5);
   setTimeout(() => { ns.forEach(n => { try { n.stop(); } catch (e) {} }); m.disconnect(); }, 2700);
 }
+let fadeId = 0;
 function fade(a, to, ms) {
-  const from = a.volume, t0 = performance.now();
-  (function step(t) { const k = Math.min(1, (t - t0) / ms); a.volume = from + (to - from) * k; if (k < 1) requestAnimationFrame(step); else if (to === 0) a.pause(); })(t0);
+  const id = ++fadeId, from = a.volume, t0 = performance.now();
+  (function step(t) { if (id !== fadeId) return; const k = Math.min(1, (t - t0) / ms); a.volume = from + (to - from) * k; if (k < 1) requestAnimationFrame(step); else if (to === 0) a.pause(); })(t0);
 }
 btn.addEventListener("click", async () => {
   playing = !playing;
   btn.classList.toggle("on", playing); btn.setAttribute("aria-pressed", String(playing)); btn.setAttribute("aria-label", playing ? "Parar pad de fundo" : "Tocar pad de fundo");
   try {
     if (PAD_FILE) {
-      audioEl = audioEl || Object.assign(new Audio(PAD_FILE), { loop: true, volume: 0 });
-      if (playing) { await audioEl.play(); fade(audioEl, .5, 3000); } else fade(audioEl, 0, 2000);
+      audioEl = audioEl || Object.assign(new Audio(PAD_FILE), { loop: true, volume: 0, preload: "none" });
+      if (playing) { await audioEl.play(); fade(audioEl, .9, 4000); } else fade(audioEl, 0, 2500);
     } else {
       if (playing) { startSynth(); if (ctx.state === "suspended") await ctx.resume(); } else stopSynth();
     }
