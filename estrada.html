@@ -79,6 +79,25 @@ canvas{display:block;width:100%;height:100%}
 .bar i{display:block;height:100%;width:0;background:var(--ambar);border-radius:2px}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px 20px max(28px,env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(27,36,42,.2) 0%,rgba(27,36,42,.85) 45%,#1B242A 100%)}
 .screen[hidden]{display:none}
+.screen{overflow-y:auto}
+.rk{margin-top:16px;background:rgba(38,50,58,.85);border-radius:14px;padding:14px}
+.rk[hidden]{display:none}
+.rk h3{margin:0 0 10px;font:400 22px/1 var(--display);text-transform:uppercase;letter-spacing:.5px}
+.rk h3 span{color:var(--ambar)}
+.rk form{display:flex;gap:8px}
+.rk input{flex:1;min-width:0;min-height:48px;border-radius:12px;border:1.5px solid rgba(169,184,191,.3);background:var(--noite);color:var(--creme);font:700 16px var(--ui);padding:0 12px}
+.rk input:focus{outline:none;border-color:var(--ambar)}
+.rk form .btn{min-height:48px;padding:0 16px;font-size:14px}
+.rk .msg{margin:8px 0 0;font-size:13px;font-weight:700;color:var(--clara);max-width:none}
+.rk .msg.ok{color:var(--ambar)}
+.rk ol{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:4px}
+.rk li{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;padding:7px 10px;border-radius:10px;background:rgba(62,80,91,.55);font:700 14px var(--ui)}
+.rk li b{font:400 18px/1 var(--display);color:var(--clara)}
+.rk li:nth-child(1) b{color:var(--ambar)}
+.rk li.me{outline:2px solid var(--ambar)}
+.rk li em{font-style:normal;font-size:12px;color:var(--suave);white-space:nowrap}
+.rk .vazio{font-size:13px;color:var(--clara);margin:6px 0 0}
+.rk .lgpd{font-size:11px;color:var(--clara);margin:6px 0 0;max-width:none}
 .screen h1,.screen h2{margin:0;font:400 clamp(64px,19vw,104px)/.86 var(--display);text-transform:uppercase;letter-spacing:-1px}
 .screen h2{font-size:clamp(48px,14vw,72px)}
 .screen .amb{color:var(--ambar)}
@@ -155,7 +174,13 @@ canvas{display:block;width:100%;height:100%}
     <p>Leve o GBA Worship pelas <b id="nCities">36</b> cidades da turnê. Cada nota acelera a viagem até a próxima cidade. Bateu três vezes, acabou. E fica de olho: com uma vida só, pode aparecer um anjo na beira da estrada.</p>
     <div class="how"><span><i></i>Nota: acelera</span><span><i style="background:var(--creme)"></i>2×: vale dobro</span><span><i class="c"></i>3 batidas: fim</span><span><i style="background:#F07E8C"></i>Coração: +1 vida</span></div>
     <p style="margin-top:8px;font-size:13px">Toque à esquerda ou à direita da tela (ou use as setas) para trocar de faixa.</p>
-    <div class="btns"><button class="btn pri" type="button" id="bPlay">Bora pra estrada</button></div>
+    <div class="btns"><button class="btn pri" type="button" id="bPlay">Bora pra estrada</button><button class="btn sec" type="button" id="bRank" hidden>Ranking da estrada</button></div>
+  </section>
+
+  <section class="screen" id="sRank" hidden>
+    <h2>Ranking da<br><span class="amb">estrada</span></h2>
+    <div class="rk"><h3>Top <span>10</span></h3><ol id="rkList2"></ol><p class="vazio" id="rkVazio2" hidden>Ninguém no ranking ainda. Seja o primeiro!</p></div>
+    <div class="btns"><button class="btn pri" type="button" id="bRankPlay">Bora pra estrada</button><button class="btn sec" type="button" id="bRankBack">Voltar</button></div>
   </section>
 
   <section class="screen" id="sPause" hidden>
@@ -172,6 +197,13 @@ canvas{display:block;width:100%;height:100%}
     <h2 id="eTitle">Fim da<br><span class="amb">viagem</span></h2>
     <p id="eMsg"></p>
     <div class="stats"><div><b id="eCities">0</b><span>cidades</span></div><div><b id="eNotes">0</b><span>notas</span></div><div><b id="eBest">0</b><span>recorde</span></div></div>
+    <div class="rk" id="rk" hidden>
+      <h3>Entre no <span>ranking</span></h3>
+      <form id="rkForm" autocomplete="off"><input id="rkNome" maxlength="16" placeholder="Seu nome ou apelido" aria-label="Seu nome para o ranking"><button class="btn pri" type="submit" id="rkBtn">Salvar</button></form>
+      <p class="msg" id="rkMsg" aria-live="polite"></p>
+      <ol id="rkList"></ol>
+      <p class="lgpd">Seu nome aparece no ranking público do jogo.</p>
+    </div>
     <div class="btns">
       <button class="btn pri" type="button" id="bAgain">Jogar de novo</button>
       <button class="btn sec" type="button" id="bShare">Compartilhar</button>
@@ -185,6 +217,7 @@ canvas{display:block;width:100%;height:100%}
 <script>
 (function(){
 "use strict";
+const RANKING_URL = "https://script.google.com/macros/s/AKfycbzazPP-xFifHh826wy3DSP5-c3pM3t9zYElb6AUS96q_5lSdL8bcfx9YMkK6eASd9UGWA/exec"; // EDITE AQUI: link do App da Web do Google Apps Script (planilha "Ranking Na Estrada")
 const $ = id => document.getElementById(id);
 const cv = $("c"), g = cv.getContext("2d");
 const C = { noite:"#26323A", funda:"#3E505B", nevoa:"#5E7480", clara:"#A9B8BF", suave:"#C9D3D8", creme:"#F3ECE2", ambar:"#E98A3A", bg:"#1B242A" };
@@ -569,6 +602,7 @@ function end(won) {
   const c = CIDADES[Math.min(S.city, CIDADES.length - 1)];
   $("eTitle").innerHTML = won ? 'Turnê<br><span class="amb">completa!</span>' : 'Fim da<br><span class="amb">viagem</span>';
   $("eMsg").textContent = won ? "Você levou o GBA Worship por todas as cidades. Que estrada!" : "Você chegou até " + c[0] + " · " + c[1] + " e pegou " + S.notes + (S.notes === 1 ? " nota" : " notas") + ". Bora de novo?";
+  rkFim(cities);
   setTimeout(() => { $("sEnd").hidden = false; $("bAgain").focus(); }, 500);
   stopMusic(false);
 }
@@ -588,6 +622,57 @@ $("bShare").addEventListener("click", async () => {
   try { if (navigator.share) { await navigator.share({ text }); return; } } catch (e) { if (e && e.name === "AbortError") return; }
   try { await navigator.clipboard.writeText(text); toast("Copiado! Cole no story."); } catch (e) { toast("Não foi possível copiar"); }
 });
+
+/* ===== ranking geral (planilha Google) ===== */
+let ultimo = null;
+function rkRender(ol, top, meIdx) {
+  ol.textContent = "";
+  (top || []).forEach((r, i) => {
+    const li = document.createElement("li"); if (i === meIdx) li.className = "me";
+    const b = document.createElement("b"); b.textContent = i + 1;
+    const n = document.createElement("span"); n.textContent = r.nome;
+    const em = document.createElement("em"); em.textContent = r.cidades + (r.cidades === 1 ? " cidade" : " cidades") + " · " + r.notas + " ♪";
+    li.append(b, n, em); ol.appendChild(li);
+  });
+}
+async function rkGet() { const r = await fetch(RANKING_URL, { cache: "no-store" }); return r.json(); }
+async function rkCarregar(ol, vazio) {
+  ol.textContent = ""; if (vazio) vazio.hidden = true;
+  try { const d = await rkGet(); rkRender(ol, d.top); if (vazio) vazio.hidden = !!(d.top && d.top.length); }
+  catch (e) { const li = document.createElement("li"); li.textContent = "Não foi possível carregar o ranking agora."; ol.appendChild(li); }
+}
+if (RANKING_URL) {
+  $("bRank").hidden = false;
+  $("bRank").addEventListener("click", () => { $("sStart").hidden = true; $("sRank").hidden = false; rkCarregar($("rkList2"), $("rkVazio2")); $("bRankBack").focus(); });
+  $("bRankBack").addEventListener("click", () => { $("sRank").hidden = true; $("sStart").hidden = false; $("bRank").focus(); });
+  $("bRankPlay").addEventListener("click", () => { $("sRank").hidden = true; startGame(); });
+  try { $("rkNome").value = localStorage.getItem("gbaw-estrada-nome") || ""; } catch (e) {}
+  $("rkForm").addEventListener("submit", async ev => {
+    ev.preventDefault(); if (!ultimo || ultimo.enviado) return;
+    const nome = $("rkNome").value.replace(/\s+/g, " ").trim();
+    const msg = $("rkMsg"); msg.className = "msg";
+    if (nome.length < 2) { msg.textContent = "Digite um nome com pelo menos 2 letras."; $("rkNome").focus(); return; }
+    $("rkBtn").disabled = true; msg.textContent = "Salvando…";
+    try {
+      const r = await fetch(RANKING_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ nome, cidades: ultimo.cidades, notas: ultimo.notas, tempo: ultimo.tempo }) });
+      const d = await r.json();
+      if (d.ok) {
+        ultimo.enviado = true; try { localStorage.setItem("gbaw-estrada-nome", nome); } catch (e) {}
+        msg.className = "msg ok"; msg.textContent = d.pos <= 10 ? "Você ficou em " + d.pos + "º lugar! 🎉" : "Você ficou em " + d.pos + "º de " + d.total + ". Bora subir!";
+        rkRender($("rkList"), d.top, d.pos - 1); $("rkForm").hidden = true;
+      } else {
+        $("rkBtn").disabled = false;
+        msg.textContent = d.erro === "palavra" ? "Esse nome não pode. Tenta outro?" : d.erro === "espera" ? "Calma! Espera uns segundos e tenta de novo." : d.erro === "nome" ? "Digite um nome com pelo menos 2 letras." : "Não deu pra salvar essa partida.";
+      }
+    } catch (e) { $("rkBtn").disabled = false; msg.textContent = "Sem conexão com o ranking. Tenta de novo."; }
+  });
+}
+function rkFim(cidades) {
+  if (!RANKING_URL) return;
+  ultimo = { cidades, notas: S.notes, tempo: Math.round(S.t), enviado: false };
+  $("rk").hidden = false; $("rkForm").hidden = false; $("rkBtn").disabled = false; $("rkMsg").textContent = ""; $("rkMsg").className = "msg";
+  rkCarregar($("rkList"));
+}
 let tT; function toast(m) { const t = $("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tT); tT = setTimeout(() => t.classList.remove("show"), 1800); }
 document.addEventListener("visibilitychange", () => { if (document.hidden && S.run) pause(); });
 })();
